@@ -2,51 +2,42 @@ import 'database_repository.dart';
 import '../models/user.dart';
 
 class MockDatabase implements DatabaseRepository {
-  // A map to store user data with IDs as keys
   Map<String, User> userData = {};
 
   @override
   void addUser(String id, User newUser) {
-    userData[id] = newUser;
-    print('User ${newUser.username} added.');
-  }
-
-  @override
-  List<String> getAllUserNames() {
-    List<String> allUserNames = [];
-    userData.forEach((key, user) {
-      allUserNames.add(user.username);
-    });
-    return allUserNames;
-  }
-
-  @override
-  void updateUser(String id, User updatedUser) {
-    if (userData.containsKey(id)) {
-      userData[id] = updatedUser;
-      print('User ${id} updated.');
+    if (userData.values.any((user) => user.username == newUser.username)) {
+      print('Username ${newUser.username} is already taken.');
     } else {
-      print('User with ID $id not found.');
+      userData[id] = newUser;
+      print('User ${newUser.username} signed up.');
     }
   }
 
   @override
-  void deleteUser(String id) {
+  User? checkUserCredentials(String username, String password) {
+    for (var user in userData.values) {
+      if (user.username == username && user.password == password) {
+        print('Login successful for user: $username');
+        return user;
+      }
+    }
+    print('Login failed for user: $username');
+    return null;
+  }
+
+  @override
+  List<User> getAllUsers() {
+    return userData.values.toList();
+  }
+
+  @override
+  void removeUser(String id) {
     if (userData.containsKey(id)) {
+      print('User ${userData[id]?.username} removed.');
       userData.remove(id);
-      print('User $id deleted.');
     } else {
       print('User with ID $id not found.');
-    }
-  }
-
-  @override
-  User? getUserById(String id) {
-    if (userData.containsKey(id)) {
-      return userData[id];
-    } else {
-      print('User with ID $id not found.');
-      return null;
     }
   }
 }
