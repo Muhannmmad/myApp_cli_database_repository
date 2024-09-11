@@ -3,36 +3,54 @@ import '../data/mock_database.dart';
 import 'user.dart';
 
 void main() {
-  // Create a mock database
   DatabaseRepository mockDatabase = MockDatabase();
 
-  // Add users
-  User user1 = User(username: 'JohnDoe', email: 'john@example.com');
-  User user2 = User(username: 'JaneDoe', email: 'jane@example.com');
+  // Sign-up user 1
+  User user1 = User(
+    username: "muhammad_ali",
+    password: "password123",
+    birthDate: "01-01-1990",
+    placeOfLiving: "Frankfurt",
+    emailAddress: "muhammad@example.com",
+  );
+  mockDatabase.addUser("01", user1);
 
-  mockDatabase.addUser('001', user1);
-  mockDatabase.addUser('002', user2);
+  // Sign-up user 2
+  User user2 = User(
+    username: "muhammad_ali",
+    password: "securepass",
+    birthDate: "15-05-1995",
+    placeOfLiving: "Frankfurt",
+    emailAddress: "muhammad@example.com",
+  );
+  mockDatabase.addUser("02", user2);
 
-  // Read all user names
-  List<String> userNames = mockDatabase.getAllUserNames();
-  print('All users: $userNames');
+  // Attempt to log in with correct credentials
+  User? loggedInUser =
+      mockDatabase.checkUserCredentials("muhammad_alie", "password123");
 
-  // Update a user
-  User updatedUser = User(username: 'JohnDoe123', email: 'john123@example.com');
-  mockDatabase.updateUser('001', updatedUser);
-
-  // Get a specific user by ID
-  User? user = mockDatabase.getUserById('001');
-  if (user != null) {
-    print('User 001: ${user.username}, ${user.email}');
+  if (loggedInUser != null) {
+    print(
+        "Welcome, ${loggedInUser.username}! Your email is ${loggedInUser.emailAddress}");
   }
 
-  // Delete a user
-  mockDatabase.deleteUser('002');
+  // Attempt to log in with incorrect credentials
+  mockDatabase.checkUserCredentials("muhammad_ali", "wrongpassword");
 
-  // Try to get a deleted user
-  User? deletedUser = mockDatabase.getUserById('002');
-  if (deletedUser == null) {
-    print('User 002 not found.');
+  // List all users
+  List<User> allUsers = mockDatabase.getAllUsers();
+  print("All users in the system:");
+  for (var user in allUsers) {
+    print("${user.username}, ${user.emailAddress}");
+  }
+
+  // Remove a user
+  mockDatabase.removeUser("01");
+
+  // List all users after removal
+  allUsers = mockDatabase.getAllUsers();
+  print("All users in the system after removal:");
+  for (var user in allUsers) {
+    print("${user.username}, ${user.emailAddress}");
   }
 }
