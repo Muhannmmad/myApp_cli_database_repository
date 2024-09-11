@@ -1,18 +1,15 @@
 import '../models/user.dart';
 
 abstract class DatabaseRepository {
-  // Create a new user
+  // Sign-up (Create)
   void addUser(String id, User newUser);
 
-  // Read all users
-  List<String> getAllUserNames();
+  // Log-in (Read)
+  User? checkUserCredentials(String username, String password);
 
-  // Update user information
-  void updateUser(String id, User updatedUser);
+  // List all users (for debugging purposes)
+  List<User> getAllUsers();
 
-  // Delete a user by ID
-  void deleteUser(String id);
-
-  // Get specific user details
-  User? getUserById(String id);
+  // Delete user
+  void removeUser(String id);
 }
