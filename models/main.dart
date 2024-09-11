@@ -1,6 +1,6 @@
-import 'data/database_repository.dart';
-import 'data/mock_database.dart';
-import 'models/user.dart';
+import '../data/database_repository.dart';
+import '../data/mock_database.dart';
+import 'user.dart';
 
 void main() {
   // Create a mock database
