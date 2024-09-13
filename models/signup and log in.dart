@@ -1,6 +1,5 @@
 import 'dart:io'; // For reading input from the console
 
-// A map to store user information: username as the key, password and interests as values
 Map<String, Map<String, dynamic>> users = {};
 
 // Function to display the main menu
