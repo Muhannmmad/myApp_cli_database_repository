@@ -1,43 +1,19 @@
 import 'database_repository.dart';
-import '../models/user.dart';
 
-class MockDatabase implements DatabaseRepository {
-  Map<String, User> userData = {};
+class InMemoryDatabase implements Database {
+  final Map<String, Person> _people = {};
+}
 
-  @override
-  void addUser(String id, User newUser) {
-    if (userData.values.any((user) => user.username == newUser.username)) {
-      print('Username ${newUser.username} is already taken.');
-    } else {
-      userData[id] = newUser;
-      print('User ${newUser.username} signed up.');
-    }
-  }
+class Person {
+  final String id;
+  final String name;
+  List<Hobby> hobbies;
 
-  @override
-  User? checkUserCredentials(String username, String password) {
-    for (var user in userData.values) {
-      if (user.username == username && user.password == password) {
-        print('Login successful for user: $username');
-        return user;
-      }
-    }
-    print('Login failed for user: $username');
-    return null;
-  }
+  Person({required this.id, required this.name, required this.hobbies});
+}
 
-  @override
-  List<User> getAllUsers() {
-    return userData.values.toList();
-  }
+class Hobby {
+  final String name;
 
-  @override
-  void removeUser(String id) {
-    if (userData.containsKey(id)) {
-      print('User ${userData[id]?.username} removed.');
-      userData.remove(id);
-    } else {
-      print('User with ID $id not found.');
-    }
-  }
+  Hobby({required this.name});
 }
