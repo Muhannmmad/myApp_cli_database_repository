@@ -1,15 +1,15 @@
-import '../models/user.dart';
+import '../models/hobbies.dart';
 
-abstract class DatabaseRepository {
-  // Sign-up (Create)
-  void addUser(String id, User newUser);
+abstract class Database {
+  // Add a person to the database
+  void addPerson(Person person);
 
-  // Log-in (Read)
-  User? checkUserCredentials(String username, String password);
+  // Add a hobby to a person
+  void addHobby(String person, Hobby hobby);
 
-  // List all users (for debugging purposes)
-  List<User> getAllUsers();
+  // Get a person by their ID
+  Person getPersonById(String id);
 
-  // Delete user
-  void removeUser(String id);
+  // Get people who have the same hobby
+  List<Person> getPeopleWithSameHobby(String hobbyName);
 }
