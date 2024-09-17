@@ -1,56 +1,25 @@
-import '../data/database_repository.dart';
-import '../data/mock_database.dart';
-import 'user.dart';
+import 'hobbies.dart';
 
 void main() {
-  DatabaseRepository mockDatabase = MockDatabase();
+  // Initialize the database
+  final database = InMemoryDatabase();
 
-  // Sign-up user 1
-  User user1 = User(
-    username: "muhammad_ali",
-    password: "password123",
-    birthDate: "01-01-1990",
-    placeOfLiving: "Frankfurt",
-    emailAddress: "muhammad@example.com",
-  );
-  mockDatabase.addUser("01", user1);
+  // Create some hobbies
+  var hiking = Hobby(name: 'Hiking');
+  var painting = Hobby(name: 'Painting');
+  var football = Hobby(name: 'Football');
 
-  // Sign-up user 2
-  User user2 = User(
-    username: "muhammad_ali",
-    password: "securepass",
-    birthDate: "15-05-1995",
-    placeOfLiving: "Frankfurt",
-    emailAddress: "muhammad@example.com",
-  );
-  mockDatabase.addUser("02", user2);
+  // Add people to the database
+  database.addPerson(Person(id: '1', name: 'AlI', hobbies: [hiking]));
+  database
+      .addPerson(Person(id: '2', name: 'Adel', hobbies: [painting, football]));
+  database.addPerson(
+      Person(id: '3', name: 'Shadi', hobbies: [hiking, painting, football]));
 
-  // Attempt to log in with correct credentials
-  User? loggedInUser =
-      mockDatabase.checkUserCredentials("muhammad_alie", "password123");
-
-  if (loggedInUser != null) {
-    print(
-        "Welcome, ${loggedInUser.username}! Your email is ${loggedInUser.emailAddress}");
-  }
-
-  // Attempt to log in with incorrect credentials
-  mockDatabase.checkUserCredentials("muhammad_ali", "wrongpassword");
-
-  // List all users
-  List<User> allUsers = mockDatabase.getAllUsers();
-  print("All users in the system:");
-  for (var user in allUsers) {
-    print("${user.username}, ${user.emailAddress}");
-  }
-
-  // Remove a user
-  mockDatabase.removeUser("01");
-
-  // List all users after removal
-  allUsers = mockDatabase.getAllUsers();
-  print("All users in the system after removal:");
-  for (var user in allUsers) {
-    print("${user.username}, ${user.emailAddress}");
+  // Retrieve people with the same hobby
+  var hikers = database.getPeopleWithSameHobby('Hiking');
+  print('People who enjoy Hiking:');
+  for (var person in hikers) {
+    print(person.name);
   }
 }
